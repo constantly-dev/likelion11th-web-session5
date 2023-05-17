@@ -1,33 +1,31 @@
 import styled from 'styled-components';
 import { DATA } from '../assets/Data';
-
-const Content = () => {
-  const slide = () => {
-    // 하...
-  };
-
+import { Link } from 'react-router-dom';
+const Movies = () => {
   return (
     <BoxOffice>
       <BxHeader>
         <BxHeaderTitle>박스오피스 순위</BxHeaderTitle>
-        <SlideButton onClick={slide}> > </SlideButton>
       </BxHeader>
       <BxContent className="bx-content">
         {DATA.map((item) => (
           <BxItemLi>
-            <BxItemA href={item.link} target="_blank">
-              <BXItemImg src={item.img}></BXItemImg>
-              <BxItemBottom>
-                <ItemTitle>{item.title}</ItemTitle>
-                <ItemYear>
-                  {item.year}ㆍ{item.country}
-                </ItemYear>
-                <ItemAverage>평균★{item.average}</ItemAverage>
-                <ItemPercent>
-                  예매율 {item.percent}ㆍ누적 관객 {item.audience}만명
-                </ItemPercent>
-              </BxItemBottom>
-            </BxItemA>
+            <Link to={`/${item.rank}`} style={{ textDecoration: 'none' }}>
+              {/* Link 컴포넌트는 a태그의 개념으로 생각하면 쉽다. but 새로고침은 안될 뿐! */}
+              <BxItemA>
+                <BXItemImg src={item.img}></BXItemImg>
+                <BxItemBottom>
+                  <ItemTitle>{item.title}</ItemTitle>
+                  <ItemYear>
+                    {item.year}ㆍ{item.country}
+                  </ItemYear>
+                  <ItemAverage>평균★{item.average}</ItemAverage>
+                  <ItemPercent>
+                    예매율 {item.percent}ㆍ누적 관객 {item.audience}만명
+                  </ItemPercent>
+                </BxItemBottom>
+              </BxItemA>
+            </Link>
           </BxItemLi>
         ))}
       </BxContent>
@@ -48,17 +46,6 @@ const BxHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-const SlideButton = styled.div`
-  background-color: #ffffff;
-  width: 30px;
-  height: 100%;
-  border-radius: 50%;
-  text-align: center;
-  border: 1px solid black;
-  font-size: 23px;
-  font-weight: 800;
-  cursor: pointer;
 `;
 const BxHeaderTitle = styled.p`
   font-size: 22px;
@@ -86,6 +73,7 @@ const BxItemLi = styled.li`
   따라서 flex를 쓰면 width보다 basis가 우선 순위로 적용되니까 flex는 basis속성으로 초기 크기를 지정해주자.
   BUT, flex-basis를 쓰면 grow와 shrink는 기본 1로 설정. 그래서 grow와 shrink를 같이 써줘야 한다. 아니면 flex 단축속성을 사용.
   */
+  text-decoration: none;
   height: calc(100% - 56px);
   padding: 0 8px;
 `;
@@ -126,4 +114,4 @@ const ItemPercent = styled.div`
   color: #74747b;
   font-size: 13px;
 `;
-export default Content;
+export default Movies;

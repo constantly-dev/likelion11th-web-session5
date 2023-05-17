@@ -56,10 +56,12 @@ const Footer = () => {
 // FOOTER
 const FooterBox = styled.div`
   width: 100%;
-  height: 270px;
+  height: 30%;
+  /* 높이를 반응형에 맞게. 미디어 쿼리..? */
   border: 1px solid black;
-  position: absolute;
+  position: relative;
   bottom: 0;
+  left: 0;
 `;
 const FtUp = styled.section`
   width: 100%;
