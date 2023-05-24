@@ -1,30 +1,52 @@
 import styled from 'styled-components';
-import { DATA } from '../assets/Data';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 const Movies = () => {
+  const [movieData, setMovieData] = useState([]);
+  useEffect(() => {
+    const apiKey = process.env.REACT_APP_API_KEY;
+    axios
+      .get('https://api.themoviedb.org/3/movie/popular?language=ko-KO&page=1', {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      })
+      .then((Response) => {
+        console.log(Response.data.results);
+        setMovieData(Response.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <BoxOffice>
       <BxHeader>
         <BxHeaderTitle>박스오피스 순위</BxHeaderTitle>
       </BxHeader>
       <BxContent className="bx-content">
-        {DATA.map((item) => (
-          <BxItemLi>
-            <Link to={`/${item.rank}`} style={{ textDecoration: 'none' }}>
+        {movieData.map((data, idx) => (
+          <BxItemLi key={idx}>
+            <Link to={`/${data.id}`} style={{ textDecoration: 'none' }}>
               {/* Link 컴포넌트는 a태그의 개념으로 생각하면 쉽다. but 새로고침은 안될 뿐! */}
-              <BxItemA>
-                <BXItemImg src={item.img}></BXItemImg>
-                <BxItemBottom>
-                  <ItemTitle>{item.title}</ItemTitle>
-                  <ItemYear>
-                    {item.year}ㆍ{item.country}
-                  </ItemYear>
-                  <ItemAverage>평균★{item.average}</ItemAverage>
-                  <ItemPercent>
-                    예매율 {item.percent}ㆍ누적 관객 {item.audience}만명
-                  </ItemPercent>
-                </BxItemBottom>
-              </BxItemA>
+              <BXItemImg
+                src={' https://image.tmdb.org/t/p/w500' + data.poster_path}
+              ></BXItemImg>
+              <BxItemBottom>
+                <ItemTitle>{data.title}</ItemTitle>
+                <ItemYear>
+                  {data.release_date}ㆍ{data.original_language}
+                </ItemYear>
+                <ItemAverage>평균★{data.vote_average}</ItemAverage>
+                <ItemPercent>
+                  {/* 예매율 {data.percent}ㆍ누적 관객 {data.audience}만명 */}
+                  {/* 데이터 없어서 제외 */}
+                </ItemPercent>
+              </BxItemBottom>
             </Link>
           </BxItemLi>
         ))}
@@ -77,9 +99,7 @@ const BxItemLi = styled.li`
   height: calc(100% - 56px);
   padding: 0 8px;
 `;
-const BxItemA = styled.a`
-  text-decoration: none;
-`;
+
 const BXItemImg = styled.img`
   width: 90%;
   height: 70%;

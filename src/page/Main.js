@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import Modal from '../components/Modal';
 import Movies from '../components/Movies';
-// import Header from '../components/Header';
 
 const Main = (props) => {
+  //const {modalOpen} = props
+
   const closeModal = () => {
     props.loginModal(false);
   };
@@ -12,7 +13,6 @@ const Main = (props) => {
     <AllContainer>
       <Modal open={props.modalOpen} close={closeModal}></Modal>
       <Movies></Movies>
-      {/* <Footer></Footer> */}
     </AllContainer>
   );
 };

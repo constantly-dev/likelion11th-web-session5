@@ -30,7 +30,7 @@ const Header = (props) => {
               <NavLeftBtn>웹툰</NavLeftBtn>
             </NavLeftLi>
             <NavSearchLi>
-              <NavSearch for="search">
+              <NavSearch htmlFor="search">
                 <input
                   type="text"
                   id="search"

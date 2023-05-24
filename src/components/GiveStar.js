@@ -5,13 +5,11 @@ import eye from '../assets/image/icon_eye.png';
 import option from '../assets/image/icon_option.png';
 
 const GiveStar = () => {
-  // const StarData = [1,2,3,4,5]
-  // map으로 아래 별 반복을 한줄로 줄일 수 있지 않을까?
   return (
     <>
       <StarLeft>
         <StarTitle>평가하기</StarTitle>
-        <StarForm>
+        {/* <StarForm> 기존 방식 -> map으로 코드 간소화
           <StarFieldset>
             <StarInput id="star1" type="radio" name="rating" value="1" />
             <StarLabel htmlFor="star1">★</StarLabel>
@@ -23,7 +21,21 @@ const GiveStar = () => {
             <StarLabel htmlFor="star4">★</StarLabel>
             <StarInput id="star5" type="radio" name="rating" value="5" />
             <StarLabel htmlFor="star5">★</StarLabel>
-            {/* htmlFor 속성으로 */}
+          </StarFieldset>
+        </StarForm> */}
+        <StarForm>
+          <StarFieldset>
+            {[1, 2, 3, 4, 5].map((rate) => (
+              <>
+                <StarInput
+                  id={`star${rate}`}
+                  type="radio"
+                  name="rating"
+                  value={rate}
+                />
+                <StarLabel htmlFor={`star${rate}`}>★</StarLabel>
+              </>
+            ))}
           </StarFieldset>
         </StarForm>
       </StarLeft>

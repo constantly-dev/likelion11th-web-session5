@@ -10,11 +10,10 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <React.StrictMode />
     <GlobalStyle />
     <App />
   </BrowserRouter>
-  // 컴포넌트 사이에 아무것도 없다면 </>으로 한개만 작성해주기
+  // 컴포넌트 사이에 아무것도 없다면 </>으로 한개만 작성해주기!
 );
 
 // If you want to start measuring performance in your app, pass a function

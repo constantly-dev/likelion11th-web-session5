@@ -67,9 +67,7 @@ const ModalBlock = styled.div`
   width: 350px;
   height: 600px;
   margin: auto;
-  /* 왜 margin: auto가 없으면 absolute처럼 왼쪽 위에 가는지 모르겠습니다. 
-  상위 background 컴포넌트에 display를 flex로 두고 align-items와 justify-content를 center를 썼는데 auto가 있어야 하는 이유가 궁금합니다.
-  */
+
   border-radius: 5px;
   background-color: #ffffff;
   align-items: center;
