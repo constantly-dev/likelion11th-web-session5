@@ -5,6 +5,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import ad from '../assets/image/ad.png';
 import GiveStar from './GiveStar';
+import { useRecoilValue } from 'recoil';
+import { recAtom } from '../recoil/recommend';
+import { Link } from 'react-router-dom';
 
 const Movie = () => {
   const params = useParams();
@@ -12,6 +15,16 @@ const Movie = () => {
   // const data = DATA[params.movie - 1];
   // return <div>{data.description}</div>;
   // movie값이 숫자라는 보장이 없기 때문에 이 방식은 쓰지 말고 filter로
+
+  const handleScroll = (e) => {
+    if (!window.scrollY) return;
+    // 현재 위치가 이미 최상단일 경우 return
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const [detailData, setDetailData] = useState([]);
   useEffect(() => {
@@ -26,7 +39,6 @@ const Movie = () => {
         }
       )
       .then((Response) => {
-        console.log(Response.data);
         setDetailData(Response.data);
       })
       .catch((error) => {
@@ -45,6 +57,9 @@ const Movie = () => {
     vote_count,
   } = detailData;
   // 구조분해할당
+
+  const recData = useRecoilValue(recAtom);
+  console.log('추천 데이터임', recData);
   return (
     <>
       <MovieAllContainer>
@@ -54,9 +69,11 @@ const Movie = () => {
             <PosterAddContainer>
               <PosterAddUl>
                 <MiniPosterBox>
-                  <MiniPoster
-                    src={'https://image.tmdb.org/t/p/w500' + poster_path}
-                  ></MiniPoster>
+                  {poster_path && (
+                    <MiniPoster
+                      src={'https://image.tmdb.org/t/p/w500' + poster_path}
+                    ></MiniPoster>
+                  )}
                 </MiniPosterBox>
                 <PosterAddBox>
                   <PosterAdd>
@@ -112,20 +129,34 @@ const Movie = () => {
                 <ActorBox></ActorBox>
               </ActorSection>
 
-              <GraphSection>
+              <RecommendSection>
                 <BasicTitleBox>
-                  <InfoTitleLeft>별점 그래프</InfoTitleLeft>
-                  <InfoTitleRight>평균 ★{vote_average}</InfoTitleRight>
-                </BasicTitleBox>
-                <GraphBox></GraphBox>
-              </GraphSection>
-
-              <CommentSection>
-                <BasicTitleBox>
-                  <InfoTitleLeft>코멘트</InfoTitleLeft>
+                  <InfoTitleLeft>추천작</InfoTitleLeft>
                   <InfoTitleRightA>더보기</InfoTitleRightA>
                 </BasicTitleBox>
-              </CommentSection>
+                <RecommendAllBox>
+                  {recData.map((item) => (
+                    <RecommendMovieBox key={item.id}>
+                      <Link
+                        to={`/${item.id}`}
+                        style={{ textDecoration: 'none' }}
+                        onClick={handleScroll}
+                      >
+                        <RecommendImg
+                          src={
+                            'https://image.tmdb.org/t/p/w500' + item.poster_path
+                          }
+                        ></RecommendImg>
+                        <RecommendTitle>{item.title}</RecommendTitle>
+                        <RecommendAverage>
+                          평균 ★{item.vote_average}
+                        </RecommendAverage>
+                      </Link>
+                    </RecommendMovieBox>
+                  ))}
+                </RecommendAllBox>
+              </RecommendSection>
+              {/*  */}
             </BottomLeftContainer>
             <BottomRightContainer>
               <BottomRightTop>
@@ -161,10 +192,48 @@ const Movie = () => {
     </>
   );
 };
+// 추천작
+const RecommendAllBox = styled.div`
+  width: 100%;
+  height: 150%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+const RecommendMovieBox = styled.div`
+  width: 25%;
+  height: 40%;
+  padding: 0 10px;
+  margin-bottom: 20px;
+`;
+const RecommendImg = styled.img`
+  width: 100%;
+  height: 80%;
+  border-radius: 5px;
+`;
+const RecommendTitle = styled.div`
+  width: 100%;
+  height: 8%;
+  font-size: 15px;
+  color: #292a32;
+  font-weight: 700;
+  margin: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  /* text-overflow: ellipsis는 혼자는 적용 X !!
+  overflow: hidden; 이랑 white-space: nowrap;을 같이 적용
+  */
+`;
+const RecommendAverage = styled.div`
+  font-size: 13px;
+  color: #787878;
+`;
 
+// 시작
 const MovieAllContainer = styled.div`
   width: 100%;
-  height: 200vh;
+  height: 300vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -324,10 +393,6 @@ const InfoTitleRightA = styled.a`
   color: #ff2f6e;
   cursor: pointer;
 `;
-const InfoTitleRight = styled.div`
-  font-size: 17px;
-  color: #282828;
-`;
 
 const BasicInfoSpecificBox = styled.div`
   width: 100%;
@@ -356,17 +421,7 @@ const ActorBox = styled.div`
   border-bottom: 1px solid rgb(227, 227, 227);
 `;
 
-const GraphSection = styled.section`
-  width: 100%;
-  height: 247px;
-`;
-const GraphBox = styled.div`
-  width: 100%;
-  height: 190px;
-  border-bottom: 1px solid rgb(227, 227, 227);
-`;
-
-const CommentSection = styled.section`
+const RecommendSection = styled.section`
   width: 100%;
   height: 385px;
 `;
@@ -374,7 +429,7 @@ const CommentSection = styled.section`
 // --- right
 const BottomRightContainer = styled.div`
   width: calc(35% - 15px);
-  height: 50%;
+  height: 30%;
   float: right;
   border-radius: 6px;
   @media screen and (max-width: 719px) {

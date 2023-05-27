@@ -6,12 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './assets/GlobalStyle';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { RecoilRoot } from 'recoil';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <GlobalStyle />
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </BrowserRouter>
   // 컴포넌트 사이에 아무것도 없다면 </>으로 한개만 작성해주기!
 );

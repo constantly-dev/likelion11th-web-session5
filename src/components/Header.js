@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 import logo from '../assets/image/icon_logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Header = (props) => {
   console.log(props);
   const handleClick = () => {
     props.open();
   };
+  const navigate = useNavigate();
 
+  const navigateToHome = () => {
+    navigate('/');
+  };
   return (
     <header>
       <nav>
         <NavWrapper>
           <NavContainer>
             <NavLogoLi>
-              <a href="!#">
+              <a href="" onClick={navigateToHome}>
                 <NavLogoImg src={logo} alt="WatchaLogo"></NavLogoImg>
               </a>
             </NavLogoLi>

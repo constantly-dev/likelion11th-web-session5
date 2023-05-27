@@ -25,8 +25,9 @@ const GiveStar = () => {
         </StarForm> */}
         <StarForm>
           <StarFieldset>
-            {[1, 2, 3, 4, 5].map((rate) => (
-              <>
+            {[1, 2, 3, 4, 5].map((rate, idx) => (
+              <span key={idx}>
+                {/* map에서 key는 컴포넌트,태그에 들어가야 한다. */}
                 <StarInput
                   id={`star${rate}`}
                   type="radio"
@@ -34,7 +35,7 @@ const GiveStar = () => {
                   value={rate}
                 />
                 <StarLabel htmlFor={`star${rate}`}>★</StarLabel>
-              </>
+              </span>
             ))}
           </StarFieldset>
         </StarForm>
